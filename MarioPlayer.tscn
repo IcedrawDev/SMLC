@@ -1,0 +1,104 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Escenas/Sprites/MarioWalk (1).png" type="Texture" id=1]
+[ext_resource path="res://Scripts/KinematicBody2D.gd" type="Script" id=2]
+[ext_resource path="res://Escenas/Sprites2/SMLC_Sprites/icon.png" type="Texture" id=3]
+[ext_resource path="res://Escenas/Sprites2/BG/BG_ForestSMW.png" type="Texture" id=4]
+[ext_resource path="res://Escenas/Sprites/MarioIdle (1).png" type="Texture" id=5]
+[ext_resource path="res://Escenas/Sprites/MarioJump (1).png" type="Texture" id=6]
+[ext_resource path="res://Escenas2/TextureButton.gd" type="Script" id=7]
+
+[sub_resource type="Animation" id=2]
+resource_name = "Idle"
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+
+[sub_resource type="Animation" id=3]
+resource_name = "Walk"
+length = 2.0
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 10.5, 11.5 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 368, 480 )
+
+[sub_resource type="AtlasTexture" id=12]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 512, 512 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 368, 480 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 472, 512 )
+
+[sub_resource type="SpriteFrames" id=11]
+animations = [ {
+"frames": [ SubResource( 8 ) ],
+"loop": true,
+"name": "normal",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "Salto",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 9 ), SubResource( 10 ) ],
+"loop": true,
+"name": "camina",
+"speed": 5.0
+} ]
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+z_index = 1
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle = SubResource( 2 )
+anims/RESET = SubResource( 4 )
+anims/Walk = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 5.5 )
+shape = SubResource( 7 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 0, -2.38419e-07 )
+current = true
+process_mode = 0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="BgForestSmw" type="Sprite" parent="Camera2D"]
+position = Vector2( 227, -329 )
+scale = Vector2( 2.13477, 1.8584 )
+z_index = -1
+texture = ExtResource( 4 )
+
+[node name="TextureButton" type="TextureButton" parent="Camera2D"]
+margin_left = 187.0
+margin_top = -168.0
+margin_right = 362.0
+margin_bottom = -52.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 3 )
+expand = true
+script = ExtResource( 7 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( -1.19209e-06, 6.375 )
+scale = Vector2( 0.0390625, 0.0405273 )
+frames = SubResource( 11 )
+animation = "Salto"
+
+[connection signal="pressed" from="Camera2D/TextureButton" to="Camera2D/TextureButton" method="_on_TextureButton_pressed"]
